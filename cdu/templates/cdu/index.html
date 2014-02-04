@@ -1,0 +1,192 @@
+{% extends "site_base.html" %}
+{% load i18n %}
+{% block extra_head %}
+<link href="{{ STATIC_URL }}css/cdu.css" rel="stylesheet"/>
+<script src="{{ STATIC_URL }}geoexplorer/externals/ext/adapter/ext/ext-base.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}geoexplorer/externals/ext/ext-all.js" type="text/javascript"></script>
+<!-- <link href="{{ STATIC_URL }}geoexplorer/externals/ext/resources/css/ext-all.css" type="text/css" rel="stylesheet"> -->
+<script src="{{ STATIC_URL }}geoexplorer/script/GeoExplorer.js" type="text/javascript"></script>
+{% endblock %}
+{% block body_class %}cdu{% endblock %}
+
+{% block body_outer %}
+
+<h3 class="page-title">Certificato di destinazione urbanistica</h3>
+
+<form class="form-inline advanced-search" role="form" name="cduForm" id="cduForm" method="POST">
+  {% csrf_token %}
+  <fieldset>
+    <div class="row-fluid"><div class="span12"><h3>Dati protocollo</h3></div>
+    </div>
+    <div class="row-fluid">
+      <div class="span3">
+        <label for="num_protocollo">Protocollo num.</label>
+        <input name="num_protocollo" class="span10" placeholder="" type="text" required maxlength="15">
+      </div>
+      <div class="span3">
+        <label class="control-label" for="prot_data">Data</label>
+        <div class=" input-append date"  data-date="2013-01-01" data-date-format="yyyy-mm-dd">
+          <input name="data_protocollo" type="text" class="span10" placeholder="yyyy-mm-dd" />
+          <span class="add-on"><i class="icon-calendar"></i></span>
+        </div>
+      </div>
+      <div class="span3">
+        <label for="num_richiesta">Richiesta num.</label>
+        <input name="num_richiesta" class="span10" placeholder="" type="text" maxlength="15">
+      </div>
+      <div class="span3">
+        <label class="control-label" for="data_richiesta">Data della richiesta</label>
+        <div class=" input-append date"  data-date="2013-01-01" data-date-format="yyyy-mm-dd">
+          <input name="data_richiesta" type="text" class="span10" placeholder="yyyy-mm-dd" />
+          <span class="add-on"><i class="icon-calendar"></i></span>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+     <div class="row-fluid"><div class="span12"><h3>Dati del richiedente</h3></div>
+    </div>
+    <div class="row-fluid">
+      <div class="span3">
+        <label for="cognome">Cognome</label>
+        <input name="cognome" class="span10" placeholder="" type="text" required maxlength="35">
+      </div>
+      <div class="span3">
+        <label for="nome">Nome</label>
+        <input name="nome" class="span10" placeholder="" type="text" required maxlength="35" >
+      </div>
+      <div class="span3">
+        <label class="control-label" for="data_nascita">Data di nascita</label>
+        <div class=" input-append date"  data-date="2013-01-01" data-date-format="yyyy-mm-dd">
+          <input name="data_nascita" type="text" class="span10" placeholder="yyyy-mm-dd" required />
+          <span class="add-on"><i class="icon-calendar"></i></span>
+        </div>
+      </div>
+      <div class="span3">
+        <div class="radio">
+          <label>
+            <input type="radio" name="sesso" id="sesso_m" value="m" checked>
+            Maschio
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="sesso" id="sesso_f" value="f">
+            Femmina
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span6">
+        <label for="luogo_nascita">Luogo di nascita</label>
+        <input name="luogo_nascita" class="span12" placeholder="" type="text" maxlength="50">
+      </div>
+      <div class="span1">
+        <label for="prov_nascita">Pv</label>
+        <input name="prov_nascita" class="span10" placeholder="" type="text" maxlength="2">
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span6">
+        <label for="indirizzo">Indirizzo</label>
+        <input name="indirizzo" class="span12" placeholder="" type="text" maxlength="100">
+      </div>
+      <div class="span4">
+        <label for="citta">Citt&agrave;</label>
+        <input name="citta" class="span12" placeholder="" type="text" maxlength="50">
+      </div>
+      <div class="span1">
+        <label for="pv">Pv</label>
+        <input name="pv" class="span10" placeholder="" type="text" maxlength="2">
+      </div>
+    </div>
+
+
+  </fieldset>
+
+  <fieldset>
+
+    <div class="row-fluid"><div class="span12"><h3>Uiu</h3></div>
+    </div>
+    <div class="row-fluid">
+     <button type="button" class="btn btn-primary" id="btn_add_uiu" data-toggle="modal" data-target="#modalUiu" >Inserisci Uiu</button>
+    </div>
+    <div class="table-responsive table-striped span5" >
+      <table class="table" id="uiuTable">
+        <thead>
+          <tr>
+            <th class="span1">#</th>
+            <th class="span1">Cancella</th>
+	    <th class="span3">Foglio</th>
+	    <th class="span3">Numero</th>
+          </tr>
+
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <div class="row-fluid"><div class="span12"><h3>Piani urbanistici</h3></div>
+    </div>
+    <div class="row-fluid">
+      {% for name in urbanistic_names %}
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="{{ name }}"> {{ name }}
+        </label>
+      </div>
+      {%endfor %}
+    </div>
+  </fieldset>
+  <fieldset>
+<button class="btn btn-primary" id="saveCdu" type="submit" onClick="return submitHandler();" >Crea documento CDU</button>
+<button type="button" class="btn btn-primary" id="cancelCdu" onClick="clearForm();" >Cancella i dati</button>
+    </fieldset>
+
+</form>
+
+<!-- Modal -->
+<div class="modal fade" id="modalUiu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Inserisci uiu</h4>
+      </div>
+      <div class="modal-body">
+        <fieldset>
+          <div class="row-fluid">
+            <form class="form-inline" id="uiuForm">
+              <div class="span12">
+                <label for="modal_uiu_foglio">Foglio</label>
+                <input name="modal_uiu_foglio" class="span2" placeholder="" type="number" maxlength="5" min="1" max="99999" >
+                <label for="modal_uiu_numero">Numero</label>
+                <input name="modal_uiu_numero" class="span2" placeholder="" type="number" maxlength="5" min="1" max="99999" >
+              </div>
+            </form>
+        </fieldset>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+          <button type="button" class="btn btn-primary" onClick="addUiu()">Salva</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+<script type="text/javascript">
+  Ext.onReady(function() {
+  $(".date").datepicker();
+  });
+</script>
+{% endblock %}
+{% block extra_script %}
+<script src="{{ STATIC_URL}}js/cdu.js" type="text/javascript"></script>
+{% endblock extra_script %}

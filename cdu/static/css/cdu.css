@@ -1,0 +1,9 @@
+/*override for firefox narrow input texts*/
+.content-wrap form input[type="text"], .content-wrap form input[type="password"], .content-wrap form input[type="email"]{
+    padding-bottom: 1px;
+    padding-top: 1px;
+}
+
+.icon-trash{ 
+    cursor:pointer; 
+} 
