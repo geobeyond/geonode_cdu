@@ -30,7 +30,7 @@ Install and start geonode_cdu::
 Usage
 -----
 
-set 'gisdata' database values in local_settings.py::
+set 'gisdata' database values in geonode_cdu/local_settings.py::
 
        'gisdata': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
