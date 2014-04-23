@@ -30,7 +30,11 @@ class MyView(View):
         html_template = cdu_doc.create_html_document()
         if html_template:
             context = {'urbanistic_names': urbanistic_plans}
-            pdf = PDFTemplateResponse(request=request, template='cdu/'+html_template, filename ="cdu.pdf", context=context, show_content_in_browser=False)
+            pdf = PDFTemplateResponse(request=request,
+                                      template='cdu/'+html_template,
+                                      filename="cdu.pdf",
+                                      context=context,
+                                      show_content_in_browser=False)
             pdf.render()
             cdu_doc.remove_html_document()
             response = HttpResponse(content=pdf, content_type='application/pdf')
