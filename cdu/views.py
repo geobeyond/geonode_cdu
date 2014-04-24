@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.db import connections
 
 import cdu.document
+import datetime
 
 
 from wkhtmltopdf.views import PDFTemplateResponse
@@ -17,7 +18,9 @@ class MyView(View):
             "SELECT tablename FROM pg_tables where tablename like '%%urbutm'")
         tables = cursor.fetchall()
         tables = dict((item[0], None) for item in tables)
-        context = {'urbanistic_names': tables}
+        now = datetime.datetime.now()
+        date = str(now.day)+'/'+str(now.month)+'/'+str(now.year)
+        context = {'urbanistic_names': tables, 'date': date,}
         return render(request, 'cdu/index.html', context)
 
 

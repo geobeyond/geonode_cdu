@@ -26,8 +26,8 @@
       </div>
       <div class="span3">
         <label class="control-label" for="prot_data">Data</label>
-        <div class=" input-append date"  data-date="2013-01-01" data-date-format="yyyy-mm-dd">
-          <input name="data_protocollo" type="text" class="span10" placeholder="yyyy-mm-dd" />
+        <div class=" input-append date"   data-date-format="dd/mm/yyyy">
+          <input name="data_protocollo" type="text" class="span10" value="{{ date }}" />
           <span class="add-on"><i class="icon-calendar"></i></span>
         </div>
       </div>
@@ -37,8 +37,8 @@
       </div>
       <div class="span3">
         <label class="control-label" for="data_richiesta">Data della richiesta</label>
-        <div class=" input-append date"  data-date="2013-01-01" data-date-format="yyyy-mm-dd">
-          <input name="data_richiesta" type="text" class="span10" placeholder="yyyy-mm-dd" />
+        <div class=" input-append date"  data-date-format="dd/mm/yyyy">
+          <input name="data_richiesta" type="text" class="span10" value="{{ date }}" />
           <span class="add-on"><i class="icon-calendar"></i></span>
         </div>
       </div>
@@ -58,8 +58,8 @@
       </div>
       <div class="span3">
         <label class="control-label" for="data_nascita">Data di nascita</label>
-        <div class=" input-append date"  data-date="2013-01-01" data-date-format="yyyy-mm-dd">
-          <input name="data_nascita" type="text" class="span10" placeholder="yyyy-mm-dd" required />
+        <div class=" input-append date"  data-date="01/01/1970" data-date-format="dd/mm/yyyy">
+          <input name="data_nascita" type="text" class="span10" placeholder="gg/mm/aaaa" required />
           <span class="add-on"><i class="icon-calendar"></i></span>
         </div>
       </div>
@@ -182,9 +182,9 @@
 
 
 
-
 <script type="text/javascript">
   Ext.onReady(function() {
+
      $(".date").datepicker();
 
      $(document).on('submit', '#cduForm', function(e){
