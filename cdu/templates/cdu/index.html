@@ -6,6 +6,7 @@
 <script src="{{ STATIC_URL }}geoexplorer/externals/ext/ext-all.js" type="text/javascript"></script>
 <!-- <link href="{{ STATIC_URL }}geoexplorer/externals/ext/resources/css/ext-all.css" type="text/css" rel="stylesheet"> -->
 <script src="{{ STATIC_URL }}geoexplorer/script/GeoExplorer.js" type="text/javascript"></script>
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script> -->
 {% endblock %}
 {% block body_class %}cdu{% endblock %}
 
@@ -143,9 +144,10 @@
     </div>
   </fieldset>
   <fieldset>
-<button class="btn btn-primary" id="saveCdu" type="submit" onClick="return submitHandler();" >Crea documento CDU</button>
-<button type="button" class="btn btn-primary" id="cancelCdu" onClick="clearForm();" >Cancella i dati</button>
-    </fieldset>
+
+      <button type="submit" class="btn btn-primary" id="saveCdu" onClick="appendUiu();">Crea documento CDU</button>
+      <button type="button" class="btn btn-primary" id="cancelCdu" onClick="clearForm();" >Cancella i dati</button>
+  </fieldset>
 
 </form>
 
@@ -172,7 +174,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
-          <button type="button" class="btn btn-primary" onClick="addUiu()">Salva</button>
+          <button type="button" class="btn btn-primary" onClick="addUiu();">Salva</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -183,7 +185,29 @@
 
 <script type="text/javascript">
   Ext.onReady(function() {
-  $(".date").datepicker();
+     $(".date").datepicker();
+
+     $(document).on('submit', '#cduForm', function(e){
+        if (!checkUiu())
+        {
+           alert('Inserisci almeno un uiu!');
+           return false;
+        }
+        else
+        {
+           if (!checkPlans())
+           {
+              alert('Seleziona almeno un piano urbanistico!');
+              return false;
+           }
+           else
+           {
+
+           }
+        }
+ return true;
+
+     });
   });
 </script>
 {% endblock %}

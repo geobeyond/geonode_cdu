@@ -13,7 +13,8 @@ class MyView(View):
 
     def get(self, request, *args, **kwargs):
         cursor = connections['gisdata'].cursor()
-        cursor.execute("SELECT tablename FROM pg_tables where tablename like '%%urbutm'")
+        cursor.execute(
+            "SELECT tablename FROM pg_tables where tablename like '%%urbutm'")
         tables = cursor.fetchall()
         tables = dict((item[0], None) for item in tables)
         context = {'urbanistic_names': tables}
@@ -23,8 +24,10 @@ class MyView(View):
     def post(self, request, *args, **kwargs):
 
         uiu = {k:v for k, v in request.POST.iteritems() if 'uiu' in k}
-        personal_data = {k:v for k, v in request.POST.iteritems() if 'urbutm' not in k and 'uiu' not in k}
-        urbanistic_plans = [k for k, v in request.POST.iteritems() if 'urbutm' in k and v == 'on']
+        personal_data = {k:v for k, v in request.POST.iteritems() if
+                         'urbutm' not in k and 'uiu' not in k}
+        urbanistic_plans = [k for k, v in request.POST.iteritems() if
+                            'urbutm' in k and v == 'on']
 
         cdu_doc = cdu.document.Document(uiu, urbanistic_plans, personal_data)
         html_template = cdu_doc.create_html_document()
@@ -43,4 +46,9 @@ class MyView(View):
 
         else:
             #TODO:: adjust not intersections response
-            return HttpResponse('Non ci sono intersezioni')
+            #return HttpResponse('Non ci sono intersezioni')
+            response = HttpResponse(content='json',
+                                    content_type='text/javascript')
+            return response
+            #response['Content-Type'] = 'text/javascript'
+            #response.write(serializers.serialize('json', ))

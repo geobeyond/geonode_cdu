@@ -64,6 +64,7 @@ function addUiu(){
     }
 }
 
+
 /**
  * Clear form and uiuTable rows
  * @method clearForm
@@ -79,20 +80,38 @@ function clearForm(){
  /**
   * Adds uiu array values to the cduForm
   * @method submitHandler
-  * @return Literal
+  * @return
   */
- function submitHandler()
+ function appendUiu()
  {
-     if (uiu.length === 0)
-     {
-         alert('Devi inserire almeno un uiu');
-         return false;
-     }
-
      for (var i=0; i<uiu.length;i++)
      {
-
-         $('#cduForm').append('<input type="hidden" name="uiu-'+i+'" value="'+uiu[i].fg+'-'+uiu[i].num+'" />');
+         $('#cduForm').append('<input type="hidden" name="uiu-'+i+'" value="'+
+                              uiu[i].fg+'-'+uiu[i].num+'" />');
      }
-     return true;
  }
+
+
+/**
+ * Checks if uiu array contains elements
+ * @method checkUiu
+ * @return Boolean
+ */
+function checkUiu(){
+  if (uiu.length === 0)
+     return false;
+  else
+     return true;
+}
+
+/**
+ * Checks if at least an urbanistic plan is selected
+ * @method checkPlans
+ * @return Boolean
+ */
+function checkPlans(){
+    if ($('form input:checkbox:checked').length > 0)
+        return true;
+    else
+        return false;
+}
